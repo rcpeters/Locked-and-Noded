@@ -30,16 +30,16 @@ passport.use(new FacebookStrategy({
     callbackURL: "http://localhost:3000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, callback) {
-   	userMgr.findOrCreate(accessToken, refreshToken, profile, callback);
+   	userMgr.findOrCreateByAuth(accessToken, refreshToken, profile, callback);
   }
 ));
 
 passport.serializeUser(function(user, done) {
-  done(null, user.id);
+  done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
+  userMgr.findById(id, function(err, user) {
     done(err, user);
   });
 });
